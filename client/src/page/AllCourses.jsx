@@ -7,7 +7,7 @@ const AllCourses = () => {
   const courseData = useSelector((state) => state.course.courseData);
   let [category, setCategory] = useState([]);
   let [filterCourses, setFilterCourses] = useState([]);
-
+  const [isSideBarVisible, setIsSideBarVisible] = useState(false)
   const toggleCategory = (e) => {
     if (category.includes(e.target.value)) {
       setCategory((prev) => prev.filter((c) => c !== e.target.value));
@@ -32,12 +32,16 @@ const AllCourses = () => {
   return (
     <div className="flex min-h-screen bg-gray-50">
       <Navbar />
-
+       <button className="fixed top-20 left-4 z-50  text-black px-3 py-1
+       rounded md:hidden border-2 border-white cursor-pointer" onClick={()=>setIsSideBarVisible(prev=>!prev)}>
+        {isSideBarVisible ? 'Hide' : 'Show'} Filters
+       </button>
       {/* sidebar */}
       <aside
-        className="w-[260px] h-screen overflow-y-auto bg-black fixed
+        className={`w-[260px] h-screen overflow-y-auto bg-black fixed
       top-0 left-0 p-6 py-[130px] border-r border-gray-200 transition-transform
-      duration-300 z-15 opacity-60"
+      duration-300 z-15 opacity-60 ${isSideBarVisible ? "translate-x-0" : "-translate-x-full"}
+      md:block md:translate-x-0`}
       >
         <h2
           className="text-xl font-bold flex items-center

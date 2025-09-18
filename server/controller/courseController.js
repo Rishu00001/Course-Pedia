@@ -2,6 +2,7 @@ import uploadOnCloudinary from "../config/cloudinary.js";
 import Course from "../model/courseModel.js";
 
 import Joi from "joi";
+import Lecture from "../model/lectureModel.js";
 
 const courseSchema = Joi.object({
   title: Joi.string().min(3).max(100).required(),
@@ -143,7 +144,144 @@ export const deleteById = async (req, res) => {
 
     return res.status(200).json({ message: "Course deleted successfully" });
   } catch (error) {
-    return res.status(500).json({ message: "Error while deleting the course", error: error.message });
+    return res.status(500).json({
+      message: "Error while deleting the course",
+      error: error.message,
+    });
+  }
+};
+
+//for Lectures:
+
+export const createLecture = async (req, res) => {
+  try {
+    const { lectureTitle } = req.body;
+    const { courseId } = req.params;
+    const role = req.role;
+
+    const lecture = await Lecture.create({ lectureTitle });
+    const course = await Course.findById(courseId);
+    if (!course) {
+      return res.status(404).json({ message: "course not found" });
+    }
+    if (course.creator != req.userId) {
+      return res.status(400).json({ message: "unauthorized" });
+    }
+    course.lectures.push(lecture._id);
+    await course.populate("lectures");
+    await course.save();
+    return res.status(201).json({ message: "Lecture created successfully" });
+  } catch (error) {
+    return res.status(500).json({ message: "error while creating lecture" });
+  }
+};
+
+export const getCourseLecture = async (req, res) => {
+  try {
+    const { courseId } = req.params; //isko validate krna hai
+
+    // Fetch course and populate lectures in one go
+    const course = await Course.findById(courseId).populate("lectures");
+
+    if (!course) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+
+    return res
+      .status(200)
+      .json({ message: "Course found succesfully", course });
+  } catch (error) {
+    console.error("Error in getCourseLecture:", error);
+    return res.status(500).json({ message: "Failed to get course lectures" });
+  }
+};
+
+export const editLecture = async (req, res) => {
+  try {
+    const { lectureId } = req.params;
+    const { isPreviewFree, lectureTitle } = req.body;
+
+    // Lecture exists?
+    const lecture = await Lecture.findById(lectureId);
+    if (!lecture) {
+      return res.status(404).json({ message: "Lecture not found" });
+    }
+
+    // Ownership check
+    const course = await Course.findOne({
+      lectures: lectureId,
+      creator: req.userId,
+    });
+    if (!course) {
+      return res
+        .status(403)
+        .json({ message: "Not allowed to edit this lecture" });
+    }
+
+    // File upload (optional)
+    if (req.file) {
+      try {
+        const videoUrl = await uploadOnCloudinary(req.file.path);
+        lecture.videoUrl = videoUrl;
+      } catch (uploadErr) {
+        return res.status(500).json({ message: "Video upload failed" });
+      }
+    }
+
+    // Partial updates
+    if (lectureTitle) {
+      lecture.lectureTitle = lectureTitle;
+    }
+    if (typeof isPreviewFree !== "undefined") {
+      lecture.isPreviewFree = isPreviewFree;
+    }
+
+    await lecture.save();
+
+    return res.status(200).json({
+      message: "Lecture updated successfully",
+      lecture,
+    });
+  } catch (error) {
+    console.error("Edit Lecture Error:", error);
+    return res.status(500).json({ message: "Failed to edit lecture" });
+  }
+};
+
+export const removeLecture = async (req, res) => {
+  try {
+    const { lectureId } = req.params;
+
+    // Check ownership
+    const course = await Course.findOne({
+      lectures: lectureId,
+      creator: req.userId,
+    });
+
+    if (!course) {
+      return res.status(403).json({ message: "Unauthorized" });
+    }
+
+    // Remove lecture reference from course first
+    const updatedCourse = await Course.findByIdAndUpdate(
+      course._id,
+      { $pull: { lectures: lectureId } },
+      { new: true }
+    );
+
+    // Then delete lecture document
+    const lecture = await Lecture.findByIdAndDelete(lectureId);
+    if (!lecture) {
+      return res.status(404).json({ message: "Lecture not found" });
+    }
+
+    return res.status(200).json({
+      message: "Lecture deleted successfully",
+      lecture,
+      course: updatedCourse,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Error while deleting lecture", error });
   }
 };
 
