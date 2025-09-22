@@ -6,6 +6,7 @@ import {
   editCourse,
   editLecture,
   getCourseById,
+  getCourseLecture,
   getCreatorCourses,
   getPublishedCourses,
   removeLecture,
@@ -34,6 +35,8 @@ courseRouter.get("/getcourse/:courseId", isAuth, getCourseById);
 courseRouter.delete("/remove/:courseId", isAuth, deleteById);
 
 //lecture routes
+
+//to create a lecture
 courseRouter.post(
   "/createlecture/:courseId",
   isAuth,
@@ -43,15 +46,21 @@ courseRouter.post(
   createLecture
 );
 
+//to edit a lecture
 courseRouter.post(
   "/editlecture/:lectureId",
   isAuth,
   requireRole("educator"),
+  upload.single("videoUrl"),
   editLectureValidator,
   validate,
   editLecture
 );
 
+//to get all the lectures of a course
+courseRouter.get("/getcourselectures/:courseId", isAuth, getCourseLecture);
+
+//to delete a lecture
 courseRouter.post(
   "/removelecture/:lectureId",
   isAuth,

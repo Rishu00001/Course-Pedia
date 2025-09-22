@@ -16,6 +16,8 @@ import useCreatorCourse from "./hooks/getCreatorCourse";
 import EditCourse from "./page/educator/EditCourse";
 import useCourses from "./hooks/getPublishedCourses";
 import AllCourses from "./page/AllCourses";
+import CreateLecture from "./page/educator/CreateLecture";
+import EditLecture from "./page/educator/EditLecture";
 
 export const server_url = "http://localhost:8000";
 const App = () => {
@@ -53,7 +55,7 @@ const App = () => {
         <Route
           path="/dashboard"
           element={
-            userData && userData?.role == "educator" ? (
+            userData && userData.role == "educator" ? (
               <Dashboard />
             ) : (
               <Navigate to={"/"} />
@@ -63,7 +65,7 @@ const App = () => {
         <Route
           path="/courses"
           element={
-            userData && userData?.role == "educator" ? (
+            userData && userData.role == "educator" ? (
               <Courses />
             ) : (
               <Navigate to={"/"} />
@@ -73,7 +75,7 @@ const App = () => {
         <Route
           path="/createcourse"
           element={
-            userData && userData?.role == "educator" ? (
+            userData && userData.role == "educator" ? (
               <CreateCourse />
             ) : (
               <Navigate to={"/"} />
@@ -83,8 +85,28 @@ const App = () => {
         <Route
           path="/editcourse/:courseId"
           element={
-            userData && userData?.role == "educator" ? (
+            userData && userData.role == "educator" ? (
               <EditCourse />
+            ) : (
+              <Navigate to={"/"} />
+            )
+          }
+        />
+        <Route
+          path="/createlecture/:courseId"
+          element={
+            userData && userData.role == "educator" ? (
+              <CreateLecture />
+            ) : (
+              <Navigate to={"/"} />
+            )
+          }
+        />
+        <Route
+          path="/editlecture/:courseId/:lectureId"
+          element={
+            userData && userData.role == "educator" ? (
+              <EditLecture />
             ) : (
               <Navigate to={"/"} />
             )

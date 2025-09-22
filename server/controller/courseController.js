@@ -170,9 +170,9 @@ export const createLecture = async (req, res) => {
     course.lectures.push(lecture._id);
     await course.populate("lectures");
     await course.save();
-    return res.status(201).json({ message: "Lecture created successfully" });
+    return res.status(201).json({ message: "Lecture created successfully",lecture,course});
   } catch (error) {
-    return res.status(500).json({ message: "error while creating lecture" });
+    return res.status(500).json({ message: "error while creating lecture",error });
   }
 };
 
