@@ -29,7 +29,7 @@ const CardPage = () => {
       p-[10px] mb-[40px]"
       >
         {popularCourses?.map((course, index) => (
-          <CourseCard key={index} {...course} />
+          <CourseCard key={index} {...course}/>
         ))}
       </div>
     </div>

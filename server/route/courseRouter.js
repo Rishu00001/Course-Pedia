@@ -7,6 +7,7 @@ import {
   editLecture,
   getCourseById,
   getCourseLecture,
+  getCreatorById,
   getCreatorCourses,
   getPublishedCourses,
   removeLecture,
@@ -60,8 +61,11 @@ courseRouter.post(
 //to get all the lectures of a course
 courseRouter.get("/getcourselectures/:courseId", isAuth, getCourseLecture);
 
+//to get the creator of a course
+courseRouter.get("/getcreator/:userId", isAuth, getCreatorById);
+
 //to delete a lecture
-courseRouter.post(
+courseRouter.delete(
   "/removelecture/:lectureId",
   isAuth,
   requireRole("educator"),

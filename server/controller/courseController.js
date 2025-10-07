@@ -3,6 +3,7 @@ import Course from "../model/courseModel.js";
 
 import Joi from "joi";
 import Lecture from "../model/lectureModel.js";
+import User from "../model/userModel.js";
 
 const courseSchema = Joi.object({
   title: Joi.string().min(3).max(100).required(),
@@ -44,7 +45,7 @@ export const createCourse = async (req, res) => {
 
 export const getPublishedCourses = async (req, res) => {
   try {
-    const courses = await Course.find({ isPublished: true });
+    const courses = await Course.find({ isPublished: true }).populate("lectures");
 
     if (courses.length == 0) {
       return res.status(404).json({ message: "Courses not found" });
@@ -284,4 +285,17 @@ export const removeLecture = async (req, res) => {
     return res.status(500).json({ message: "Error while deleting lecture", error });
   }
 };
+
+export const getCreatorById  = async(req,res)=>{
+  try {
+    const {userId} = req.params;
+    const user = await User.findById(userId).select("-password");
+    if(!user){
+      return res.status(404).json({message:"User not found"});
+    }
+    return res.status(200).json(user);
+  } catch (error) {
+    return res.status(500).json({message:"Error while finding user by id",error});
+  }
+}
 

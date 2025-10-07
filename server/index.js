@@ -6,6 +6,7 @@ import authRouter from "./route/authRouter.js";
 import cors from "cors";
 import userRouter from "./route/userRouter.js";
 import courseRouter from "./route/courseRouter.js";
+import paymentRouter from "./route/paymentroutes.js";
 dotenv.config();
 const PORT = process.env.PORT;
 const app = express();
@@ -21,6 +22,7 @@ app.use(cookieParser());
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/course", courseRouter);
+app.use("/api/order", paymentRouter);
 app.get("/", (req, res) => {
   res.send("Hello from server");
 });

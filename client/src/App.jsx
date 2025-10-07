@@ -18,12 +18,16 @@ import useCourses from "./hooks/getPublishedCourses";
 import AllCourses from "./page/AllCourses";
 import CreateLecture from "./page/educator/CreateLecture";
 import EditLecture from "./page/educator/EditLecture";
+import ViewCourse from "./page/ViewCourse";
+import ScrollToTop from "./component/ScrollToTop";
+import WatchLecture from "./page/WatchLecture";
 
 export const server_url = "http://localhost:8000";
 const App = () => {
   let loading = useCurrentUser();
   useCourses();
   useCreatorCourse();
+  ScrollToTop();
   const { userData } = useSelector((store) => store.user);
   if (loading) return null;
   return (
@@ -32,6 +36,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/allcourses" element={<AllCourses />} />
+        <Route path="/viewcourse/:courseId" element={<ViewCourse />} />
         <Route
           path="/signup"
           element={!userData ? <Signup /> : <Navigate to={"/"} />}
@@ -111,6 +116,10 @@ const App = () => {
               <Navigate to={"/"} />
             )
           }
+        />
+        <Route
+          path="/watch/:courseId"
+          element={userData ? <WatchLecture /> : <Navigate to={"/"} />}
         />
       </Routes>
     </>
