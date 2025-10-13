@@ -8,6 +8,8 @@ import Logos from "../component/Logos";
 import Explore from "../component/Explore";
 import CardPage from "../component/CardPage";
 import { Link } from "react-router-dom";
+import About from "../component/About";
+import Footer from "../component/Footer";
 const Home = () => {
   return (
     <div className="w-full overflow-hidden">
@@ -72,6 +74,8 @@ const Home = () => {
       <Logos />
       <Explore />
       <CardPage />
+      <About/>
+      <Footer/>
     </div>
   );
 };

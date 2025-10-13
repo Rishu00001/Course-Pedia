@@ -82,9 +82,11 @@ const Navbar = () => {
                       Profile
                     </button>
                   </Link>
-                  <button className="px-4 py-2 hover:bg-gray-700  rounded-t-lg text-left">
-                    My Courses
-                  </button>
+                  <Link to={"/enrolledcourses"}>
+                    <button className="px-4 py-2 hover:bg-gray-700  rounded-t-lg text-left">
+                      My Courses
+                    </button>
+                  </Link>
                   <button
                     className="px-4 py-2 hover:bg-gray-700  rounded-b-lg text-left"
                     onClick={handleLogout}

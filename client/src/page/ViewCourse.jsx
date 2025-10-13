@@ -103,7 +103,7 @@ const ViewCourse = () => {
   };
   const checkEnrolled = () => {
     const verify = userData?.enrolledCourses.find(
-      (course) => course.toString() === selectedCourse._id.toString()
+      (course) => course._id.toString() === selectedCourse._id.toString()
     );
     if (verify) {
       setIsEnrolled(true);

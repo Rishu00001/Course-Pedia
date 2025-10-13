@@ -4,6 +4,18 @@ import { Link } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa6";
 const Dashboard = () => {
   const { userData } = useSelector((store) => store.user);
+  const { creatorCourses } = useSelector((store) => store.course);
+  
+  const courseProgressData = creatorCourses?.map((course) => ({
+    name: course.title.slice(0, 10) + (course.title.length > 10 ? "..." : ""),
+    lectures: course.lectures.length || 0,
+  })) || [];
+
+  const enrollData = creatorCourses?.map((course) => ({
+    name: course.title.slice(0, 10) + (course.title.length > 10 ? "..." : ""),
+    students: course.enrolledStudents.length || 0,
+  })) || [];
+
   return (
     <div className="flex min-h-screen bg-gray-100">
       <Link to={"/"}>

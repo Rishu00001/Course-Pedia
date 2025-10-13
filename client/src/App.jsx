@@ -21,6 +21,7 @@ import EditLecture from "./page/educator/EditLecture";
 import ViewCourse from "./page/ViewCourse";
 import ScrollToTop from "./component/ScrollToTop";
 import WatchLecture from "./page/WatchLecture";
+import EnrolledCourses from "./page/EnrolledCourses";
 
 export const server_url = "http://localhost:8000";
 const App = () => {
@@ -120,6 +121,10 @@ const App = () => {
         <Route
           path="/watch/:courseId"
           element={userData ? <WatchLecture /> : <Navigate to={"/"} />}
+        />
+        <Route
+          path="/enrolledcourses"
+          element={userData ? <EnrolledCourses /> : <Navigate to={"/login"} />}
         />
       </Routes>
     </>
