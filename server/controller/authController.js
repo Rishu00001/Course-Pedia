@@ -10,12 +10,12 @@ export const signup = async (req, res) => {
     name = (name || "").trim();
     email = (email || "").trim().toLowerCase();
     if (!name) {
-      throw new Error("name is invalid");
+      throw new Error("invalid name or email");
     } else if (name.length < 3 || name.length > 50 || !name.includes(" ")) {
-      throw new Error("name is invalid");
+      throw new Error("invalid name or email");
     }
     if (!validator.isEmail(email)) {
-      throw new Error("email is invalid");
+      throw new Error("invalid name or email");
     }
     if (
       !validator.isStrongPassword(password, {
@@ -26,7 +26,7 @@ export const signup = async (req, res) => {
         minSymbols: 1,
       })
     ) {
-      throw new Error("Password is not strong");
+      throw new Error("password too weak");
     }
     //the data is validated , then signup the user
     //check if the user already exist in the db
@@ -67,14 +67,14 @@ export const login = async (req, res) => {
     //check if the user exist in db
     let user = await User.findOne({ email });
     if (!user) {
-      throw new Error("user does not exist");
+      throw new Error("invalid username or password");
     }
     //check if the password is true or not
 
     const isPasswordTrue = await bcrypt.compare(password, user.password);
 
     if (!isPasswordTrue) {
-      throw new Error("password is incorrect");
+      throw new Error("invalid username or password");
     }
 
     //if password matches then generate the token
@@ -135,7 +135,7 @@ export const sendOtp = async (req, res) => {
     const { email } = req.body;
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).json({ message: "User not found" });
+      return res.status(404).json({message: "something went wrong"});
     }
     const otp = Math.floor(1000 + Math.random() * 9000).toString();
 
@@ -149,7 +149,7 @@ export const sendOtp = async (req, res) => {
     return res.status(200).json({ message: "OTP sent successfully" });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Otp error" });
+    return res.status(500).json({ message: "can't send otp" });
   }
 };
 
@@ -187,7 +187,7 @@ export const resetPassword = async (req, res) => {
     await user.save();
     return res.status(200).json({ message: "password reset successfully" });
   } catch (error) {
-    return res.status(500).json({ message: "password reset error" });
+    return res.status(500).json({ message: "can't reset password" });
   }
 };
 

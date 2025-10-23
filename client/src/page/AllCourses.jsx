@@ -38,8 +38,8 @@ const AllCourses = () => {
        </button>
       {/* sidebar */}
       <aside
-        className={`w-[260px] h-screen overflow-y-auto bg-black fixed
-      top-0 left-0 p-6 py-[130px] border-r border-gray-200 transition-transform
+        className={`w-[260px]  h-screen overflow-y-auto bg-black fixed
+      top-15 left-0 px-6 py-[80px] border-r border-gray-200 transition-transform
       duration-300 z-15 opacity-60 ${isSideBarVisible ? "translate-x-0" : "-translate-x-full"}
       md:block md:translate-x-0`}
       >

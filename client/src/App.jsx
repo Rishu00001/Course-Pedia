@@ -22,12 +22,14 @@ import ViewCourse from "./page/ViewCourse";
 import ScrollToTop from "./component/ScrollToTop";
 import WatchLecture from "./page/WatchLecture";
 import EnrolledCourses from "./page/EnrolledCourses";
+import useGetAllReviews from "./hooks/getAllReviews";
 
 export const server_url = "http://localhost:8000";
 const App = () => {
   let loading = useCurrentUser();
   useCourses();
   useCreatorCourse();
+  useGetAllReviews();
   ScrollToTop();
   const { userData } = useSelector((store) => store.user);
   if (loading) return null;

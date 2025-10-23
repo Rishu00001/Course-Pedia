@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import logo from "../assets/logo.jpg";
+import logo from "../assets/cp.png";
 import google from "../assets/google.jpg";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
@@ -43,6 +43,7 @@ const Signup = () => {
     } catch (error) {
       console.log(error);
       setLoading(false);
+      toast.error(error.response.data.message);
     }
   };
 
@@ -83,7 +84,7 @@ const Signup = () => {
       justify-center gap-3"
         >
           <div>
-            <h1 className="font-semibold text-black text-2xl">
+            <h1 className="font-semibold text-gray-800 text-2xl">
               Let's get started
             </h1>
           </div>
@@ -172,7 +173,7 @@ const Signup = () => {
           </div>
           <button
             onClick={handleSignup}
-            className="w-[80%] h-[40px] bg-black text-white
+            className="w-[80%] h-[40px] bg-gray-800 text-white
           cursor-pointer flex items-center justify-center rounded-[5px]"
             disabled={loading}
           >
@@ -194,7 +195,7 @@ const Signup = () => {
           </div>
           <div
             onClick={googleSignup}
-            className="w-[80%] h-[40px] border-1 border-black rounded-[5px]
+            className="w-[80%] h-[40px] border-1 border-gray-800 rounded-[5px]
           flex items-center justify-center cursor-pointer"
           >
             <img src={google} alt="" className="w-[25px]" />
@@ -205,7 +206,7 @@ const Signup = () => {
           <div className="text-[#6f6f6f] text-sm">
             Already have an account?{" "}
             <span
-              className="text-black underline underline-offset-1
+              className="text-gray-800 underline underline-offset-1
             cursor-pointer"
               onClick={() => navigate("/login")}
             >
@@ -216,12 +217,13 @@ const Signup = () => {
 
         {/* right div */}
         <div
-          className="w-[50%] h-[100%] rounded-r-2xl bg-black
+          className="w-[50%] h-[100%] rounded-r-2xl bg-gray-800
         md:flex items-center justify-center flex-col hidden"
         >
           <img src={logo} alt="Fudemy Logo" className="w-30 shadow-2xl" />
-          <div className="flex flex-col">
-            <span className="text-2xl text-white">Welcome to Fudemy</span>
+          <div className="flex flex-col justify-center items-center mt-5 gap-3">
+            <span className="text-2xl text-white">Welcome to</span>
+            <span className="text-4xl font-bold text-white">CoursePedia</span>
           </div>
         </div>
       </form>

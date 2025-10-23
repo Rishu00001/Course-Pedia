@@ -87,6 +87,7 @@ const EditCourse = () => {
       navigate("/courses");
     } catch (error) {
       console.log(error);
+      toast.error(error.response?.data?.message || "Failed to edit course");
     } finally {
       setLoading(false);
     }

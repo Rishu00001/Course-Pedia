@@ -11,7 +11,7 @@ import { server_url } from "../App";
 import axios from "axios";
 import CourseCard from "../component/CourseCard";
 import { toast } from "react-toastify";
-
+import { calculateAverageRating } from "../utils/averageRating";
 const ViewCourse = () => {
   const dispatch = useDispatch();
   const { courseId } = useParams();
@@ -22,6 +22,10 @@ const ViewCourse = () => {
   const [creatorData, setCreatorData] = useState(null);
   const [creatoerCourses, setCreatorCourses] = useState(null);
   const [isEnrolled, setIsEnrolled] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const fetchCourse = async () => {
     const course = courseData?.find((course) => course._id === courseId);
     dispatch(setSelectedCourse(course));
@@ -109,6 +113,32 @@ const ViewCourse = () => {
       setIsEnrolled(true);
     }
   };
+  const handleReview = async () => {
+    setLoading(true);
+    try {
+      const res = await axios.post(
+        `${server_url}/api/review/createreview`,
+        {
+          courseId: selectedCourse._id,
+          userId: userData._id,
+          rating,
+          comment,
+        },
+        { withCredentials: true }
+      );
+      console.log("Review response", res.data);
+      toast.success("Review submitted successfully");
+    } catch (error) {
+      console.log("Error submitting review", error);
+      toast.error(error.response?.data?.message || "Failed to submit review");
+    } finally {
+      setLoading(false);
+      setComment("");
+      setRating(0);
+    }
+  };
+ 
+  const {average,reviewsLength} = calculateAverageRating(selectedCourse?.reviews);
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-6xl mx-auto bg-gray-50 rounded-xl p-6 space-y-6 relative">
@@ -138,9 +168,9 @@ const ViewCourse = () => {
               <div className="text-yellow-500 font-medium flex gap-2">
                 <span className="flex items-center justify-start gap-1">
                   {" "}
-                  <FaStar /> 5
+                  <FaStar /> {average}
                 </span>
-                <span className="text-gray-400">(1,200 Reviews)</span>
+                <span className="text-gray-400">({`${reviewsLength}`} Reviews)</span>
               </div>
               <div>
                 <span className="text-xl font-semibold text-black">
@@ -263,20 +293,31 @@ const ViewCourse = () => {
             <div className="flex gap-1 mb-2">
               {[1, 2, 3, 4, 5].map((star) => (
                 <FaStar
+                  onClick={() => setRating(star)}
                   key={star}
-                  className="fill-gray-300 cursor-pointer"
+                  className={
+                    star <= rating
+                      ? "text-yellow-500 cursor-pointer"
+                      : "text-gray-300 cursor-pointer"
+                  }
                   size={30}
                 />
               ))}
             </div>
             <textarea
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
               rows={4}
               className=" mt-1 w-full p-3 border border-gray-300 rounded-md
             focus:outline-none focus:border-none focus:ring-2 focus:ring-gray-200  resize-none"
               placeholder="Write your review here..."
             />
-            <button className="bg-black text-white mt-3 px-4 py-2 rounded hover:bg-gray-800">
-              Submit Review
+            <button
+              onClick={handleReview}
+              className="bg-black text-white mt-3 px-4 py-2 rounded hover:bg-gray-800"
+              disabled={loading}
+            >
+              {loading ? "Submitting..." : "Submit Review"}
             </button>
           </div>
         </div>

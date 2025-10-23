@@ -1,9 +1,11 @@
 import React from "react";
 import { FaStar } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { calculateAverageRating } from "../utils/averageRating";
 
-const CourseCard = ({ title, thumbnail, category, price, _id }) => {
+const CourseCard = ({ title, thumbnail, category, price, _id, reviews }) => {
   const navigate = useNavigate()
+  const {average} = calculateAverageRating(reviews);
   return (
     <div
       className="max-w-xs w-full bg-white rounded-xl
@@ -37,7 +39,7 @@ const CourseCard = ({ title, thumbnail, category, price, _id }) => {
           <span className="font-semibold text-gray-800">{price}</span>
           <span className="flex items-center gap-1">
             <FaStar className="text-yellow-500 text-sm" />
-            5
+            {average}
           </span>
         </div>
       </div>

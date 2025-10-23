@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import logo from "../assets/logo.jpg";
+import logo from "../assets/cp.png";
 import google from "../assets/google.jpg";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
@@ -36,6 +36,7 @@ const Login = () => {
       setLoading(false);
     } catch (error) {
       console.log(error);
+      toast.error(error.response.data.message);
       setLoading(false);
     }
   };
@@ -61,6 +62,7 @@ const Login = () => {
       navigate("/");
     } catch (error) {
       console.log(error);
+      toast.error(error.response.data.message);
     }
   };
   return (
@@ -77,7 +79,7 @@ const Login = () => {
         >
           <div>
             <h1 className="font-semibold text-black text-2xl">
-              Log in to Fudemy
+              Log in 
             </h1>
           </div>
 
@@ -130,7 +132,7 @@ const Login = () => {
           </div>
           <button
             onClick={handleLogin}
-            className="w-[80%] h-[40px] bg-black text-white
+            className="w-[80%] h-[40px] bg-gray-800 text-white
            cursor-pointer flex items-center justify-center rounded-[5px]"
             disabled={loading}
           >
@@ -175,12 +177,13 @@ const Login = () => {
 
         {/* right div */}
         <div
-          className="w-[50%] h-[100%] rounded-r-2xl bg-black
+          className="w-[50%] h-[100%] rounded-r-2xl bg-gray-800
          md:flex items-center justify-center flex-col hidden"
         >
-          <img src={logo} alt="Fudemy Logo" className="w-30 shadow-2xl" />
-          <div className="flex flex-col">
-            <span className="text-2xl text-white">Welcome to Fudemy</span>
+          <img src={logo} alt="CoursePedia Logo" className="w-30 shadow-2xl" />
+          <div className="flex flex-col justify-center items-center mt-5 gap-3">
+            <span className="text-2xl text-white">Welcome To</span>
+            <span className="text-4xl font-bold text-white">CoursePedia</span>
           </div>
         </div>
       </form>

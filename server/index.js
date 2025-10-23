@@ -7,6 +7,7 @@ import cors from "cors";
 import userRouter from "./route/userRouter.js";
 import courseRouter from "./route/courseRouter.js";
 import paymentRouter from "./route/paymentroutes.js";
+import reviewRouter from "./route/reviewRouter.js";
 dotenv.config();
 const PORT = process.env.PORT;
 const app = express();
@@ -21,6 +22,7 @@ app.use(cookieParser());
 
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
+app.use("/api/review", reviewRouter);
 app.use("/api/course", courseRouter);
 app.use("/api/order", paymentRouter);
 app.get("/", (req, res) => {
