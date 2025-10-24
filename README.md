@@ -61,7 +61,7 @@ Clone the repository:
 
 Bash
 
-git clone https://github.com/your-username/coursepedia.git
+git clone https://github.com/Rishu00001/coursepedia.git
 cd coursepedia
 Set up the Backend:
 
