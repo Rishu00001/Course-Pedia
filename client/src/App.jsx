@@ -24,7 +24,7 @@ import WatchLecture from "./page/WatchLecture";
 import EnrolledCourses from "./page/EnrolledCourses";
 import useGetAllReviews from "./hooks/getAllReviews";
 
-export const server_url = "http://localhost:8000";
+export const server_url = "http://43.205.38.211:8000";
 const App = () => {
   let loading = useCurrentUser();
   useCourses();
