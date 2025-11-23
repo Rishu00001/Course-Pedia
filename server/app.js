@@ -9,11 +9,11 @@ import courseRouter from "./route/courseRouter.js";
 import paymentRouter from "./route/paymentroutes.js";
 import reviewRouter from "./route/reviewRouter.js";
 dotenv.config();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 8000;
 const app = express();
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.CLIENT_URL,
     credentials: true,
   })
 );

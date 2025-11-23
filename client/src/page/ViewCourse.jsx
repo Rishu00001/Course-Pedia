@@ -147,7 +147,7 @@ const ViewCourse = () => {
           {/* thumbnail */}
           <div className="w-full md:w-1/2">
             <Link to={"/"}>
-              <FaArrowLeft className="text-black w-[22px] h-[22px] cursor-pointer" />
+              <FaArrowLeft className="text-black w-[22px] h-[22px] cursor-pointer"/>
             </Link>
             {selectedCourse?.thumbnail ? (
               <img
